@@ -6,7 +6,7 @@
 /*   By: sslaoui <sslaoui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 10:56:22 by sslaoui           #+#    #+#             */
-/*   Updated: 2024/03/03 11:31:09 by sslaoui          ###   ########.fr       */
+/*   Updated: 2024/03/05 01:15:08 by sslaoui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,20 +111,3 @@ char	**ft_split(char const *s, char c)
 	res = ft_allocate(res, s, j, c);
 	return (res);
 }
-
-// void l()
-// {
-// 	system("leaks a.out");
-// }
-// int main()
-// {
-// 	char *s;
-// // atexit(l);
-// 	s = "salah saloui nadi";
-// 	char **res = ft_split(s, ' ');
-// 	// while(*res)
-// 	// {
-// 		printf("%s\n", res[1]);
-// 		// res++;
-// 	// }
-// 	free(*res);}

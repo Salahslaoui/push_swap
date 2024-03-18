@@ -6,7 +6,7 @@
 /*   By: sslaoui <sslaoui@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 20:01:56 by sslaoui           #+#    #+#             */
-/*   Updated: 2024/03/04 17:46:28 by sslaoui          ###   ########.fr       */
+/*   Updated: 2024/03/08 03:40:44 by sslaoui          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,153 +15,159 @@
 #include <string.h>
 #include "libft/libft.h"
 
-// void	split_arg(char *arg)
-// {
-// 	char **res;
-// 	res = ft_split(arg);
-// 	printf("*res = %s", *(res + 1));
-// }
-
-void	check_d2(char **arg, int i, int j)
-{
-	if ((arg[i][j] == 32 && arg[i][j + 1] == '\0') || arg[i][j] == '\0')
-	{
-		printf("Error\n");
-		exit(0);
-	}
-}
 void	ft_exit(void)
 {
 	write(2, "Error\n", 6);
 	exit(1);
 }
+int	count_size(char **arg)
+{
+	int i;
+	int j;
+	int len;
+	char **res;
+
+	i = 1;
+	len = 0;
+	while(arg[i])
+	{
+	j = 0;
+		res = ft_split(arg[i], ' ');
+		while(res[j])
+			j++;
+		len += j;
+		free(res);
+		i++;
+	}
+	// printf("%d\n", len);
+	return (len);
+}
+void	swap_digit(int *dig0, int *dig1)
+{
+	int tmp;
+	
+	tmp = *dig0;
+	*dig0 = *dig1;
+	*dig1 = tmp;
+}
+
+int	*ft_sort_dig(int *dig, int count_size)
+{
+	int i;
+	int j;
+
+	j = 0;
+	while (j < count_size)
+	{
+		i = 1;
+		while (i < count_size)
+		{
+			if(dig[i] < dig[i - 1])
+			{
+				swap_digit(&dig[i], &dig[i - 1]);
+				i++;
+			}
+			i++;
+		}
+		j++;
+	}
+	return (dig);
+}
+
+void	ft_check_double(char **res, long *dig, int *i, char **arg)
+{
+	int j;
+	int k;
+	int *a;
+
+	j = 0;
+	k = 0;
+	if (res[j] == (void *)0)
+		ft_exit();
+	while(res[j])
+	{
+		while(res[j][k])
+		{
+			if ((res[j][k] == 43 || res[j][k] == 45) && k > 0)
+				ft_exit();
+			k++;
+		}
+		dig[*i] = ft_atoi(res[j]);
+		if (!dig)
+			ft_exit();
+		if (dig[*i] > 2147483647 || dig[*i] < -2147483648)
+			ft_exit();
+		j++;
+		*i += 1;
+	}
+}
+
+void	check_double(char **arg, int i)
+{
+	char **res;
+	long *dig;
+	int *a;
+	int b;
+	int f;
+
+	b = 0;
+	f = 0;
+	dig = malloc(count_size(arg) + 1);
+	while(arg[i])
+	{
+		res = ft_split(arg[i], ' ');
+		ft_check_double(res, dig, &f, arg);
+		i++;
+	}
+	a = ft_sort_dig((int *)dig, count_size(arg));
+	while(b < count_size(arg))
+	{
+		if(a[b] == a[b + 1])
+			ft_exit();
+		b++;
+	}
+	// return 1;
+}
 
 char	**check_d(char **arg, int i)
 {
 	int j;
-	// char *str;
-	// char *tmp;
-	// int *cap;
+	int k;
+	char **res;
+	int dig;
 
-	// str = NULL;
-	// tmp = NULL;
-	// cap = 0;
+	dig = 0;
+	k = 0;
+	// res = NULL;
 	while(arg[i])
 	{
 		j = 0;
-		r = ft_split();
-		if (r[0][0] == "\0")
-		
-		if (arg[i][j] == '\0')
-			ft_exit();
-		if ((arg[i][j] == 43 || arg[i][j] == 45) && arg[i][j + 1] == '\0')
-			ft_exit();
-		while(arg[i][j])
+		while (arg[i][j])
 		{
-			if ((arg[i][j] == 32 && arg[i][j + 1] == '\0'))
-				ft_exit();
-			if ((arg[i][j] >= 48 && arg[i][j] <= 57) || arg[i][j] == 32)
+			if ((arg[i][j] == 43 || arg[i][j] == 45) && arg[i][j + 1] != ' ')
 				j++;
-			else if (j == 0 && (arg[i][j] == 43 || arg[i][j] == 45))
-				j++;
-			else
+			if ((arg[i][j] < 48 || arg[i][j] > 57) && arg[i][j] != ' ')
 				ft_exit();
-		// tmp = str;
-		// str = ft_strjoin(str, ft_strjoin(arg[i], " "));
-		// free(tmp);
+			j++;
 		}
-		// cap[i] = ft_atoi(*ft_split(str, ' '));
+		k = 0;
 		i++;
 	}
-		return (arg);
+	return res;
 }
 
-char	**check_arg(char **arg)
-{
-	int	k;
-	char **res;
-	res = NULL;
-	int	i;
-	int j;
-
-	i = 1;
-	j = 0;
-	res = check_d(arg, i);
-	return (res);
-}
-int ft_strlen2(char **str)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
 int main(int ac, char **av)
 {
 	char	**res;
-	res = NULL;
-	char **r;
-	int dig[20];
-	int j = 0;
-	int k = 0;
-	// dig = 0;
-	int i = 1;
-	res = check_d(av, i);
-	while(av[i])
-	{
-		r = ft_split(av[i], ' ');
-		
-		
-		while (r[j])
-		{
-			printf("%s\n", r[j]);
-			printf("here\n");
-			// dig[k] = ft_atoi(r[j]);
-			k++;
-			j++;
-		}
-		printf("here\n");
-		i++;
-		j = 0;
-	}
-	// while(r[i])
-	// {
-	// 	printf("%s ", r[i]);
-	// 	i++;
-	// }
-	// while(r)
-	// {
-	// 	printf("%s", r[i]);
-	// 	i++;
-	// }
-	// while(dig[i])
-	// {
-	// 	printf("%d", dig[i]);
-	// 	i++;
-	// }
-	// printf("%s", res[1]);
-	// printf("%d", dig[0]);
-	// if (ac == 9)
-	// {
-	// 	printf("too many");
-	// 	return(0);
-	// }
-	// res = check_arg(av);
-
-	// while (av[i])
-	// {
-	// 	j = 0;
-	// 	while(av[i][j] != '\0')
-	// 	{
-	// 		write(1, &av[i][j], 1);
-	// 		j++;
-	// 	}
-	// 	write(1, "\n", 1);
-	// 	i++;
-	// }
-	// write(1, &av[1][0], 1);
+	// char **r;
+	long dig;
+	// int j = 0;
+	// int k = 0;
+	// // dig = 0;
+	// int i = 1;
+	// res = check_err(av, i);
+	res = check_d(av, 1);
+	check_double(av, 1);
 }
 
 
